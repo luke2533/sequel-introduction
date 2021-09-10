@@ -1,4 +1,5 @@
 import os
+import datetime
 import pymysql
 
 # Get username from cloud9
@@ -11,10 +12,26 @@ connection = pymysql.connect(host="localhost", user=username, password="", db="C
 
 try:
     with connection.cursor() as cursor:
-        sql = "SELECT * FROM Artist;"
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        print(result)
+        # rows = [("Bob", 21, "1990-02-06 23:04:56"),
+        #         ("Jim", 56, "1955-05-09 13:12:45"),
+        #         ("Fred", 100, "1911-09-12 01:01:01")]
+        # cursor.executemany("INSERT INTO Freinds VALUES (%s, %s, %s);", rows)
+        # Inserts names
+        list_of_names = ["Fred", "Fred"]
+        format_strings = ",".join(["%s"]*len(list_of_names))
+        cursor.execute("DELETE FROM Freinds WHERE name in ({})".format(format_strings), list_of_names)
+        connection.commit()
 finally:
     #Close the connection IMPORTANT
     connection.close()
+
+
+# try:
+#     with connection.cursor() as cursor:
+        
+#         cursor.execute("""CREATE TABLE IF NOT EXISTS
+#                         Freinds(name char(20), age int, DOB datetime);""")
+       
+# finally:
+#     #Close the connection IMPORTANT
+#     connection.close()
